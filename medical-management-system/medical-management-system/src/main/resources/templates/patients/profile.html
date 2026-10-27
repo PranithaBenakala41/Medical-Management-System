@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Profile | MediCare</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f1f5f9;
+        color: #1e293b;
+    }
+
+    header {
+        background: #0f766e;
+        color: white;
+        padding: 22px 7%;
+    }
+
+    header h1 {
+        margin: 0 0 6px;
+    }
+
+    main {
+        max-width: 750px;
+        margin: 35px auto;
+        padding: 0 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .field {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        font-size: 15px;
+        font-family: inherit;
+    }
+
+    input[readonly] {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 90px;
+    }
+
+    .hint {
+        display: block;
+        margin-top: 6px;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .success {
+        background: #dcfce7;
+        color: #166534;
+        padding: 13px;
+        border-radius: 7px;
+        margin-bottom: 20px;
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 12px 18px;
+        border: none;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .save-btn {
+        background: #0f766e;
+        color: white;
+    }
+
+    .back-btn {
+        background: #e2e8f0;
+        color: #1e293b;
+    }
+
+    footer {
+        text-align: center;
+        padding: 25px;
+        color: #64748b;
+    }
+</style>
+
+</head><body><header>
+    <h1>MediCare</h1>
+    <p>Manage your patient profile</p>
+</header><main>
+    <div class="card">    <h2>My Profile</h2>
+    <p>Update your contact and personal details below.</p>
+
+    <div class="success"
+         th:if="${successMessage != null}"
+         th:text="${successMessage}">
+        Profile updated successfully!
+    </div>
+
+    <form th:action="@{/patients/profile/update}"
+          th:object="${patient}"
+          method="post">
+
+        <div class="field">
+            <label for="id">Patient ID</label>
+            <input id="id" type="text" th:value="*{id}" readonly>
+        </div>
+
+        <div class="field">
+            <label for="name">Full Name</label>
+            <input id="name" type="text" th:value="*{name}" readonly>
+            <span class="hint">Contact the administrator if your name needs correction.</span>
+        </div>
+
+        <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" th:value="*{email}" readonly>
+            <span class="hint">Your registered email cannot be changed here.</span>
+        </div>
+
+        <div class="field">
+            <label for="age">Age</label>
+            <input id="age" type="number" th:field="*{age}"
+                   min="0" max="130" required>
+        </div>
+
+        <div class="field">
+            <label for="gender">Gender</label>
+            <select id="gender" th:field="*{gender}">
+                <option value="">Select gender</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Other">Other</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="phone">Phone Number</label>
+            <input id="phone" type="tel" th:field="*{phone}"
+                   maxlength="20" placeholder="Enter your phone number">
+        </div>
+
+        <div class="field">
+            <label for="address">Address</label>
+            <textarea id="address" th:field="*{address}"
+                      maxlength="500"
+                      placeholder="Enter your address"></textarea>
+        </div>
+
+        <div class="buttons">
+            <button type="submit" class="btn save-btn">
+                Save Changes
+            </button>
+
+            <a th:href="@{/patients/dashboard}" class="btn back-btn">
+                Back to Dashboard
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+</main><footer>
+    MediCare Medical Management System
+</footer></body>
+</html>

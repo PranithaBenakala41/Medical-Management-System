@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Department | MediCare</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #176b87;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button, .back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 11px 16px;
+            background: #176b87;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .back {
+            background: #555;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Add Department</h1>
+    <p>Enter the hospital department details below.</p>
+
+    <form th:action="@{/admin/departments/save}"
+          th:object="${department}"
+          method="post">
+
+        <label for="name">Department Name</label>
+        <input type="text"
+               id="name"
+               th:field="*{name}"
+               placeholder="e.g. Cardiology"
+               required>
+
+        <label for="description">Description</label>
+        <textarea id="description"
+                  th:field="*{description}"
+                  placeholder="Enter department details"></textarea>
+
+        <button type="submit">Save Department</button>
+
+        <a th:href="@{/admin/departments}" class="back">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prescriptions | MediCare</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 25px;
+            color: #243047;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        h1, h2 {
+            color: #176b62;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 11px;
+            margin-top: 7px;
+            border: 1px solid #ccd5df;
+            border-radius: 6px;
+        }
+
+        textarea {
+            min-height: 90px;
+        }
+
+        button {
+            margin-top: 18px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background: #176b62;
+            color: white;
+            cursor: pointer;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            margin: 12px 0;
+        }
+
+        .success {
+            background: #e0f5e8;
+            color: #176536;
+        }
+
+        .error {
+            background: #ffeded;
+            color: #a32626;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e3e8ef;
+            overflow-wrap: anywhere;
+        }
+
+        th {
+            background: #eaf5f2;
+        }
+
+        a {
+            color: #176b62;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <a th:href="@{/doctor/dashboard}">← Doctor Dashboard</a>
+
+    <h1>Prescription Management</h1>
+
+    <div th:if="${successMessage}"
+         class="message success"
+         th:text="${successMessage}"></div>
+
+    <div th:if="${errorMessage}"
+         class="message error"
+         th:text="${errorMessage}"></div>
+
+    <!-- Write Prescription -->
+    <div class="card">
+        <h2>Write New Prescription</h2>
+
+        <form th:action="@{/doctor/prescriptions/save}"
+              method="post">
+
+            <label for="patientId">Select Patient</label>
+
+            <select id="patientId" name="patientId" required>
+                <option value="">-- Select Patient --</option>
+
+                <option th:each="patient : ${patients}"
+                        th:value="${patient.id}"
+                        th:text="${patient.name + ' (' + patient.email + ')'}">
+                </option>
+            </select>
+
+            <p th:if="${#lists.isEmpty(patients)}">
+                No patients found. Register a patient first.
+            </p>
+
+            <label for="medicines">Medicines and Dosage</label>
+
+            <textarea id="medicines"
+                      name="medicines"
+                      maxlength="2000"
+                      placeholder="Medicine name, dosage and frequency"
+                      required></textarea>
+
+            <label for="instructions">Instructions</label>
+
+            <textarea id="instructions"
+                      name="instructions"
+                      maxlength="2000"
+                      placeholder="Duration, timing and other instructions">
+            </textarea>
+
+            <button type="submit">Save Prescription</button>
+        </form>
+    </div>
+
+    <!-- Saved Prescriptions -->
+    <div class="card">
+        <h2>Saved Prescriptions</h2>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Patient</th>
+                    <th>Medicines</th>
+                    <th>Instructions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="p : ${prescriptions}">
+                    <td th:text="${p.prescriptionDate}"></td>
+                    <td th:text="${p.patient.name}"></td>
+                    <td th:text="${p.medicines}"></td>
+                    <td th:text="${p.instructions}"></td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(prescriptions)}">
+                    <td colspan="4">
+                        No prescriptions written yet.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

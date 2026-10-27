@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Dashboard | MediCare</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #0f766e;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .navbar h1 {
+            font-size: 26px;
+        }
+
+        .navbar p {
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #0f766e;
+            padding: 10px 18px;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 22px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 5px solid #0f766e;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-card h3 {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+
+        .summary-card p {
+            font-size: 14px;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .summary-icon {
+            font-size: 27px;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        .action-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 7px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .action-card h3 {
+            margin-bottom: 12px;
+            font-size: 19px;
+        }
+
+        .action-card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            display: inline-block;
+            background: #0f766e;
+            color: white;
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .action-btn:hover {
+            background: #115e59;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 35px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar h1 {
+                font-size: 22px;
+            }
+
+            .welcome h2 {
+                font-size: 24px;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="navbar">
+        <div>
+            <h1>MediCare</h1>
+            <p>Medical Management System</p>
+        </div>
+
+        <a th:href="@{/logout}" class="logout-btn">Logout</a>
+    </header>
+
+    <!-- Patient Dashboard -->
+    <main class="container">
+
+        <section class="welcome">
+            <h2>Welcome to Your Dashboard! 👋</h2>
+            <p>
+                Manage your medical information, appointments,
+                prescriptions, and billing details in one place.
+            </p>
+        </section>
+
+        <!-- Summary Cards -->
+        <section class="summary-grid">
+
+            <div class="summary-card">
+                <div class="summary-icon">👨‍⚕️</div>
+                <h3>Find Doctors</h3>
+                <p>Browse doctors and their available services.</p>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon">📅</div>
+                <h3>Appointments</h3>
+                <p>View your scheduled medical appointments.</p>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon">💊</div>
+                <h3>Prescriptions</h3>
+                <p>Review medicines and instructions prescribed by your doctor.</p>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon">💳</div>
+                <h3>Medical Bills</h3>
+                <p>Review your medical bills and payment status.</p>
+            </div>
+
+        </section>
+
+        <!-- Patient Quick Actions -->
+        <section>
+            <h2 class="section-title">Quick Actions</h2>
+
+            <div class="actions-grid">
+
+                <!-- Profile -->
+                <div class="action-card">
+                    <h3>👤 My Profile</h3>
+                    <p>
+                        View your personal information and contact details.
+                    </p>
+                    <a th:href="@{/patients/profile}" class="action-btn">
+                        View Profile
+                    </a>
+                </div>
+
+                <!-- Find Doctors: view only -->
+                <div class="action-card">
+                    <h3>🩺 Find Doctors</h3>
+                    <p>
+                        Explore available doctors and their specializations.
+                    </p>
+                    <a th:href="@{/doctors}" class="action-btn">
+                        View Doctors
+                    </a>
+                </div>
+
+                <!-- My Appointments -->
+                <div class="action-card">
+                    <h3>📅 My Appointments</h3>
+                    <p>
+                        Check the details and status of your own appointments.
+                    </p>
+                    <a th:href="@{/patients/appointments}" class="action-btn">
+                        View My Appointments
+                    </a>
+                </div>
+
+                <!-- Book Appointment -->
+                <div class="action-card">
+                    <h3>➕ Book Appointment</h3>
+                    <p>
+                        Request an appointment with an available doctor.
+                    </p>
+                    <a th:href="@{/appointments/new}" class="action-btn">
+                        Book Now
+                    </a>
+                </div>
+
+                <!-- Prescriptions -->
+                <div class="action-card">
+                    <h3>💊 My Prescriptions</h3>
+                    <p>
+                        View prescriptions and instructions provided by your doctor.
+                    </p>
+                    <a th:href="@{/patients/prescriptions}" class="action-btn">
+                        View Prescriptions
+                    </a>
+                </div>
+
+                <!-- Bills -->
+                <div class="action-card">
+                    <h3>💳 My Bills</h3>
+                    <p>
+                        Review your bills, amounts, dates, and payment status.
+                    </p>
+                    <a th:href="@{/patients/bills}" class="action-btn">
+                        View My Bills
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 MediCare Medical Management System. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

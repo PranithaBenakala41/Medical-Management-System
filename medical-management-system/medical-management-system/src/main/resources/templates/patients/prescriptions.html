@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Prescriptions | MediCare</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #0f766e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .prescription-card {
+            background: white;
+            padding: 22px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .prescription-card h3 {
+            color: #0f766e;
+            margin-top: 0;
+        }
+
+        .details {
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 16px;
+            background: #0f766e;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back {
+            background: #475569;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>💊 My Prescriptions</h1>
+    <p>View prescriptions provided by your doctor</p>
+</header>
+
+<div class="container">
+
+    <div class="topbar">
+        <h2>Prescription History</h2>
+
+        <a th:href="@{/patients/dashboard}" class="btn back">
+            Back to Dashboard
+        </a>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(prescriptions)}">
+
+        <div class="prescription-card"
+             th:each="prescription : ${prescriptions}">
+
+            <h3>
+                Prescription #
+                <span th:text="${prescription.id}"></span>
+            </h3>
+
+            <div class="details">
+
+                <p>
+                    <span class="label">Date:</span>
+                    <span th:text="${prescription.prescriptionDate != null
+                        ? prescription.prescriptionDate : 'Not specified'}"></span>
+                </p>
+
+                <p>
+                    <span class="label">Doctor:</span>
+                    <span th:text="${prescription.doctor != null
+                        ? prescription.doctor.name : 'Not specified'}"></span>
+                </p>
+
+                <p>
+                    <span class="label">Medicines:</span>
+                </p>
+
+                <p th:text="${prescription.medicines != null
+                    ? prescription.medicines : 'No medicine details available'}">
+                </p>
+
+                <p>
+                    <span class="label">Instructions:</span>
+                </p>
+
+                <p th:text="${prescription.instructions != null
+                    ? prescription.instructions : 'No instructions available'}">
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="empty"
+         th:if="${#lists.isEmpty(prescriptions)}">
+
+        <h3>No prescriptions available</h3>
+
+        <p>
+            Your prescriptions will appear here once they have been
+            recorded by your healthcare provider.
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

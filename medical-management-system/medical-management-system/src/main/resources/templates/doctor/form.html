@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Form | Medical Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1 th:text="${doctor.id == null ? 'Add Doctor' : 'Edit Doctor'}">
+        Add Doctor
+    </h1>
+
+    <form th:action="@{/doctors/save}"
+          th:object="${doctor}"
+          method="post">
+		  <input type="hidden" th:field="*{id}">
+
+        <label for="name">Doctor Name</label>
+        <input type="text" id="name"
+               th:field="*{name}"
+               placeholder="Enter doctor name"
+               required>
+
+        <label for="specialization">Specialization</label>
+        <input type="text" id="specialization"
+               th:field="*{specialization}"
+               placeholder="e.g. Cardiologist"
+               required>
+
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone"
+               th:field="*{phone}"
+               placeholder="Enter phone number"
+               required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email"
+               th:field="*{email}"
+               placeholder="Enter email address"
+               required>
+
+        <label for="availableDays">Available Days</label>
+        <input type="text" id="availableDays"
+               th:field="*{availableDays}"
+               placeholder="e.g. Monday, Wednesday, Friday">
+
+        <!-- Password appears only when adding a new doctor -->
+        <div th:if="${doctor.id == null}">
+            <label for="password">Doctor Login Password</label>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   placeholder="Create a password"
+                   minlength="8"
+                   autocomplete="new-password"
+                   required>
+            <p>This password will be encrypted before being stored.</p>
+        </div>
+
+        <button type="submit" class="btn">Save Doctor</button>
+        <a th:href="@{/doctors}" class="btn">Cancel</a>
+
+    </form>
+
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Departments | MediCare</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #176b87;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #176b87;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back {
+            background: #555;
+        }
+
+        .delete {
+            background: #dc3545;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #176b87;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .message {
+            color: green;
+            margin-top: 15px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Manage Departments</h1>
+    <p>Add and manage hospital departments here.</p>
+
+    <a th:href="@{/admin/dashboard}" class="button back">
+        Back to Dashboard
+    </a>
+
+    <a th:href="@{/admin/departments/new}" class="button">
+        + Add Department
+    </a>
+
+    <p class="message"
+       th:if="${successMessage}"
+       th:text="${successMessage}"></p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Department Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="department : ${departments}">
+            <td th:text="${department.id}"></td>
+            <td th:text="${department.name}"></td>
+            <td th:text="${department.description}"></td>
+            <td>
+                <form th:action="@{/admin/departments/delete/{id}(id=${department.id})}"
+                      method="post"
+                      onsubmit="return confirm('Delete this department?');">
+                    <button type="submit" class="button delete">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(departments)}">
+            <td colspan="4" class="empty">
+                No departments added yet.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

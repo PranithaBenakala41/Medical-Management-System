@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | Medical Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body><div class="container">
+    <h1>Book Appointment</h1><form th:action="@{/appointments/save}"
+      th:object="${appointment}" method="post">
+
+    <label for="patientName">Patient Name</label>
+    <input type="text" id="patientName"
+           th:field="*{patientName}"
+           placeholder="Enter patient name" required>
+
+    <label for="doctor">Select Doctor</label>
+    <select id="doctor" name="doctor.id" required>
+        <option value="">Select a doctor</option>
+        <option th:each="doc : ${doctors}"
+                th:value="${doc.id}"
+                th:text="${doc.name + ' - ' + doc.specialization}">
+        </option>
+    </select>
+
+    <label for="appointmentDate">Appointment Date</label>
+    <input type="date" id="appointmentDate"
+           th:field="*{appointmentDate}" required>
+
+    <label for="appointmentTime">Appointment Time</label>
+    <input type="time" id="appointmentTime"
+           th:field="*{appointmentTime}" required>
+
+    <label for="reason">Reason for Visit</label>
+    <textarea id="reason" th:field="*{reason}"
+              placeholder="Describe the reason for the visit"
+              rows="3" required></textarea>
+
+    <button type="submit" class="btn">Book Appointment</button>
+    <a th:href="@{/appointments}" class="btn">Cancel</a>
+
+</form>
+
+</div><script th:src="@{/js/app.js}"></script></body>
+</html>

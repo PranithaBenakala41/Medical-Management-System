@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Patients | MediCare</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #0f766e;
+            color: white;
+            padding: 22px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #0f766e;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .back {
+            background: #475569;
+        }
+
+        .add {
+            background: #2563eb;
+        }
+
+        .table-wrapper {
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            overflow-x: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #ecfdf5;
+            color: #115e59;
+        }
+
+        .edit {
+            color: #2563eb;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .delete {
+            background: #dc2626;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        .notice {
+            background: #fff7ed;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏥 Manage Patients</h1>
+    <p>View and manage registered patients</p>
+</header>
+
+<div class="container">
+
+    <div class="topbar">
+        <h2>Patient Directory</h2>
+
+        <div>
+            <a th:href="@{/admin/dashboard}" class="btn back">
+                Back to Admin Dashboard
+            </a>
+
+            <a th:href="@{/patients/new}" class="btn add">
+                + Add Patient
+            </a>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="patient : ${patients}">
+                    <td th:text="${patient.id}">1</td>
+                    <td th:text="${patient.name}">Patient Name</td>
+                    <td th:text="${patient.age}">20</td>
+                    <td th:text="${patient.gender}">Gender</td>
+                    <td th:text="${patient.phone}">Phone</td>
+                    <td th:text="${patient.email}">Email</td>
+                    <td th:text="${patient.address}">Address</td>
+
+                    <td>
+                        <a th:href="@{/patients/edit/{id}(id=${patient.id})}"
+                           class="edit">Edit</a>
+
+                        <form th:action="@{/patients/delete/{id}(id=${patient.id})}"
+                              method="post"
+                              style="display:inline"
+                              onsubmit="return confirm('Delete this patient?');">
+
+                            <button type="submit" class="btn delete">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(patients)}">
+                    <td colspan="8" class="empty">
+                        No patients registered yet.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

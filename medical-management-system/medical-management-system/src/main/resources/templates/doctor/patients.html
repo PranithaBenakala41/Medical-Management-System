@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Patients | MediCare</title><style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: #f3f7fc;
+        color: #243247;
+        padding: 30px;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    h1 {
+        color: #0879c9;
+        margin-bottom: 8px;
+    }
+
+    .header p {
+        color: #718096;
+    }
+
+    .back {
+        text-decoration: none;
+        background: #0879c9;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 8px;
+    }
+
+    .table-box {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 14px;
+        text-align: left;
+        border-bottom: 1px solid #e4edf5;
+    }
+
+    th {
+        background: #e6f4ff;
+        color: #0879c9;
+    }
+
+    .empty {
+        text-align: center;
+        padding: 25px;
+        color: #718096;
+    }
+
+    @media (max-width: 600px) {
+        body {
+            padding: 15px;
+        }
+    }
+</style>
+
+</head><body>
+<div class="container"><div class="header">
+    <div>
+        <h1>My Patients</h1>
+        <p>View registered patient details.</p>
+    </div>
+
+    <a class="back" th:href="@{/doctor/dashboard}">
+        ← Back to Dashboard
+    </a>
+</div>
+
+<div class="table-box">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="patient : ${patients}">
+            <td th:text="${patient.id}">1</td>
+            <td th:text="${patient.name}">Patient Name</td>
+            <td th:text="${patient.age}">25</td>
+            <td th:text="${patient.gender}">Female</td>
+            <td th:text="${patient.phone}">Phone</td>
+            <td th:text="${patient.email}">Email</td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(patients)}">
+            <td colspan="6" class="empty">No patients found.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | MediCare</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #26364a;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+
+        .sidebar {
+            width: 250px;
+            background: #123b65;
+            color: white;
+            padding: 25px 16px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: bold;
+            padding: 5px 10px 35px;
+        }
+
+        .brand span {
+            color: #63d7ed;
+        }
+
+        .menu-title {
+            color: #a9c4df;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            margin: 15px 10px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 13px 14px;
+            margin-bottom: 7px;
+            border-radius: 8px;
+            color: #e6f0fa;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #24639b;
+            color: white;
+        }
+
+        .logout-link {
+            margin-top: 35px;
+            border: 1px solid #52789c;
+        }
+
+        /* Main content */
+
+        .main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .topbar {
+            height: 85px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 35px;
+            border-bottom: 1px solid #e5eaf1;
+        }
+
+        .topbar h2 {
+            font-size: 23px;
+            color: #17365d;
+        }
+
+        .admin-profile {
+            background: #e6f2ff;
+            color: #1769aa;
+            padding: 11px 15px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 35px;
+        }
+
+        .welcome {
+            margin-bottom: 28px;
+        }
+
+        .welcome h1 {
+            font-size: 27px;
+            color: #183b61;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #7b8a9d;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Statistics cards */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 13px;
+            box-shadow: 0 4px 15px rgba(30, 65, 100, 0.05);
+            border: 1px solid #edf1f7;
+        }
+
+        .stat-label {
+            color: #78879a;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #173e68;
+        }
+
+        .stat-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 43px;
+            height: 43px;
+            border-radius: 11px;
+            background: #e6f2ff;
+            color: #1769e0;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        /* Management section */
+
+        .section-heading {
+            font-size: 20px;
+            color: #17365d;
+            margin-bottom: 20px;
+        }
+
+        .management-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .management-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            background: white;
+            padding: 23px;
+            border-radius: 12px;
+            border: 1px solid #e9eef5;
+            transition: 0.2s;
+        }
+
+        .management-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(30, 65, 100, 0.09);
+            border-color: #9bc8f5;
+        }
+
+        .management-card .icon {
+            font-size: 27px;
+            margin-bottom: 15px;
+        }
+
+        .management-card h3 {
+            font-size: 16px;
+            margin-bottom: 9px;
+            color: #244567;
+        }
+
+        .management-card p {
+            color: #8491a3;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .arrow {
+            display: block;
+            text-align: right;
+            color: #1769e0;
+            font-size: 20px;
+            margin-top: 12px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            padding: 30px 10px;
+        }
+
+        /* Responsive design */
+
+        @media (max-width: 1050px) {
+            .stats,
+            .management-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .sidebar {
+                width: 215px;
+            }
+
+            .content {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 18px;
+            }
+
+            .brand {
+                padding-bottom: 15px;
+            }
+
+            .menu-title {
+                margin-top: 10px;
+            }
+
+            .nav-link {
+                display: inline-block;
+                margin: 3px;
+                padding: 10px;
+            }
+
+            .logout-link {
+                margin-top: 10px;
+            }
+
+            .topbar {
+                height: auto;
+                padding: 20px;
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .stats,
+            .management-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            Medi<span>Care</span>
+        </div>
+
+        <p class="menu-title">MAIN MENU</p>
+
+        <a class="nav-link active"
+           th:href="@{/admin/dashboard}">
+            ▦ &nbsp; Dashboard
+        </a>
+
+        <a class="nav-link"
+           th:href="@{/doctors}">
+            ♙ &nbsp; Manage Doctors
+        </a>
+
+        <a class="nav-link"
+           th:href="@{/patients}">
+            ♧ &nbsp; Manage Patients
+        </a>
+
+        <a class="nav-link"
+           th:href="@{/appointments}">
+            ▣ &nbsp; Appointments
+        </a>
+
+        <p class="menu-title">ADMINISTRATION</p>
+
+        <a class="nav-link"
+           th:href="@{/admin/bills}">
+            ▤ &nbsp; Manage Bills
+        </a>
+
+        <a class="nav-link"
+           th:href="@{/admin/departments}">
+            ✚ &nbsp; Departments
+        </a>
+
+        <form th:action="@{/logout}" method="post">
+            <button type="submit"
+                    class="nav-link logout-link"
+                    style="width:100%;text-align:left;background:transparent;cursor:pointer;">
+                ↪ &nbsp; Logout
+            </button>
+        </form>
+
+    </aside>
+
+    <!-- Main dashboard -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <h2>Admin Dashboard</h2>
+
+            <div class="admin-profile">
+                Administrator
+            </div>
+
+        </header>
+
+        <section class="content">
+
+            <div class="welcome">
+                <h1>Welcome, Admin! 👋</h1>
+                <p>
+                    Here's an overview of your medical management system.
+                    Manage healthcare operations from one place.
+                </p>
+            </div>
+
+            <!-- Statistics -->
+
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div class="stat-icon">♙</div>
+
+                    <p class="stat-label">Total Doctors</p>
+
+                    <div class="stat-number"
+                         th:text="${totalDoctors}">
+                        0
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">♧</div>
+
+                    <p class="stat-label">Total Patients</p>
+
+                    <div class="stat-number"
+                         th:text="${totalPatients}">
+                        0
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">▣</div>
+
+                    <p class="stat-label">Today's Appointments</p>
+
+                    <div class="stat-number"
+                         th:text="${todayAppointments}">
+                        0
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Management cards -->
+
+            <h2 class="section-heading">System Management</h2>
+
+            <div class="management-grid">
+
+                <a class="management-card"
+                   th:href="@{/doctors}">
+
+                    <div class="icon">👨‍⚕️</div>
+
+                    <h3>Manage Doctors</h3>
+
+                    <p>
+                        View doctors and manage doctor records.
+                    </p>
+
+                    <span class="arrow">→</span>
+                </a>
+
+                <a class="management-card"
+                   th:href="@{/patients}">
+
+                    <div class="icon">🧑‍🤝‍🧑</div>
+
+                    <h3>Manage Patients</h3>
+
+                    <p>
+                        View registered patients and their details.
+                    </p>
+
+                    <span class="arrow">→</span>
+                </a>
+
+                <a class="management-card"
+                   th:href="@{/appointments}">
+
+                    <div class="icon">📅</div>
+
+                    <h3>Appointments</h3>
+
+                    <p>
+                        View and manage patient appointments.
+                    </p>
+
+                    <span class="arrow">→</span>
+                </a>
+
+                <a class="management-card"
+                   th:href="@{/admin/bills}">
+
+                    <div class="icon">💳</div>
+
+                    <h3>Manage Bills</h3>
+
+                    <p>
+                        Generate patient bills and track payment status.
+                    </p>
+
+                    <span class="arrow">→</span>
+                </a>
+
+                <a class="management-card"
+                   th:href="@{/admin/departments}">
+
+                    <div class="icon">🏥</div>
+
+                    <h3>Departments</h3>
+
+                    <p>
+                        Organize and manage hospital departments.
+                    </p>
+
+                    <span class="arrow">→</span>
+                </a>
+
+                <a class="management-card"
+                   th:href="@{/admin/dashboard}">
+
+                    <div class="icon">📊</div>
+
+                    <h3>System Overview</h3>
+
+                    <p>
+                        Review your current system statistics.
+                    </p>
+
+                    <span class="arrow">→</span>
+                </a>
+
+            </div>
+
+            <div class="footer">
+                MediCare Medical Management System
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>
